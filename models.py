@@ -37,23 +37,23 @@ def db_init_records():
         release_date = date.today()
         ))
 
-    new_performance = Performance.insert().values(
-        Movie_id = new_movie.id,
-        Actor_id = new_actor.id,
-        fee = 50.00
-    )
+    # new_performance = Performance.insert().values(
+    #     Movie_id = new_movie.id,
+    #     Actor_id = new_actor.id,
+    #     fee = 50.00
+    # )
 
     new_actor.insert()
     new_movie.insert()
-    db.session.execute(new_performance) 
+    # db.session.execute(new_performance) 
     db.session.commit()
 
 # An association table. Possibly needs more work still need to verify working correctly. 
-Performance = db.Table('Performance', db.Model.metadata,
-    db.Column('Movie_id', db.Integer, db.ForeignKey('movies.id')),
-    db.Column('Actor_id', db.Integer, db.ForeignKey('actors.id')),
-    db.Column('fee', db.Float)
-)
+# Performance = db.Table('Performance', db.Model.metadata,
+#     db.Column('Movie_id', db.Integer, db.ForeignKey('movies.id')),
+#     db.Column('Actor_id', db.Integer, db.ForeignKey('actors.id')),
+#     db.Column('fee', db.Float)
+# )
 
 #------------
 # Models
@@ -65,7 +65,7 @@ class Movie(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     release_date = db.Column(Date)
-    actors = db.relationship('Actor', secondary=Performance, backref=db.backref('performances', lazy='joined'))
+    # actors = db.relationship('Actor', secondary=Performance, backref=db.backref('performances', lazy='joined'))
 
     def __repr__(self):
         return f'<Movie {self.id}:{self.title} @{self.start_time}>'
