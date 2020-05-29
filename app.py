@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from auth import AuthError, requires_auth
-from models import db_drop_and_create_all, setup_db, Actor, Movie, Performance
+from models import db_drop_and_create_all, setup_db, Actor, Movie    #, Performance
 
 # ROWS_PER_PAGE defines the number of objects to be returned in paginated results. 
 # Hardocded here but could be changed.
