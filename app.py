@@ -3,7 +3,8 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from auth import AuthError, requires_auth
-from models import db_drop_and_create_all, setup_db, Actor, Movie    #, Performance
+from models import db_drop_and_create_all, setup_db, Actor, Movie, Performance, db
+from flask_migrate import Migrate
 
 # ROWS_PER_PAGE defines the number of objects to be returned in paginated results. 
 # Hardocded here but could be changed.
@@ -11,8 +12,9 @@ ROWS_PER_PAGE = 10
 
 def create_app(test_config=None):
   app = Flask(__name__)
+  migrate = Migrate(app, db)
   setup_db(app)
-  db_drop_and_create_all() # uncomment this if you want to start a new database on app refresh
+  # db_drop_and_create_all() # uncomment this if you want to start a new database on app refresh
 
   CORS(app, resources={'/': {'origins': '*'}})
   

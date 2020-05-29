@@ -5,8 +5,8 @@ import json
 from flask_migrate import Migrate
 
 # database_path = os.environ['DATABASE_URL']
-# database_path = 'postgres://postgres@localhost:5432/capstone'
-database_path = 'postgres://txoytuiksvhssc:a7d9ca8df13af8faec463783b2c0cc3506b6ff348f6d2afec54af9a212abc09b@ec2-35-174-88-65.compute-1.amazonaws.com:5432/d4a91cto59cs85'
+database_path = 'postgres://postgres@localhost:5432/capstone'
+# database_path = 'postgres://txoytuiksvhssc:a7d9ca8df13af8faec463783b2c0cc3506b6ff348f6d2afec54af9a212abc09b@ec2-35-174-88-65.compute-1.amazonaws.com:5432/d4a91cto59cs85'
 
 db = SQLAlchemy()
 
@@ -37,23 +37,23 @@ def db_init_records():
         release_date = date.today()
         ))
 
-    # new_performance = Performance.insert().values(
-    #     Movie_id = new_movie.id,
-    #     Actor_id = new_actor.id,
-    #     fee = 50.00
-    # )
+    new_performance = Performance.insert().values(
+        Movie_id = new_movie.id,
+        Actor_id = new_actor.id,
+        actor_fee = 50.00
+    )
 
     new_actor.insert()
     new_movie.insert()
-    # db.session.execute(new_performance) 
+    db.session.execute(new_performance) 
     db.session.commit()
 
 # An association table. Possibly needs more work still need to verify working correctly. 
-# Performance = db.Table('Performance', db.Model.metadata,
-#     db.Column('Movie_id', db.Integer, db.ForeignKey('movies.id')),
-#     db.Column('Actor_id', db.Integer, db.ForeignKey('actors.id')),
-#     db.Column('fee', db.Float)
-# )
+Performance = db.Table('Performance', db.Model.metadata,
+    db.Column('Movie_id', db.Integer, db.ForeignKey('movies.id')),
+    db.Column('Actor_id', db.Integer, db.ForeignKey('actors.id')),
+    db.Column('actor_fee', db.Float)
+)
 
 #------------
 # Models
@@ -65,7 +65,7 @@ class Movie(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     release_date = db.Column(Date)
-    # actors = db.relationship('Actor', secondary=Performance, backref=db.backref('performances', lazy='joined'))
+    actors = db.relationship('Actor', secondary=Performance, backref=db.backref('performances', lazy='joined'))
 
     def __repr__(self):
         return f'<Movie {self.id}:{self.title} @{self.start_time}>'
